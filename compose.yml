@@ -1,0 +1,54 @@
+name: "unifi"
+
+x-lockdown: &lockdown
+  # prevents write access to the image itself
+  read_only: true
+  # prevents any process within the container to gain more privileges
+  security_opt:
+    - "no-new-privileges=true"
+
+services:
+  network-application:
+    depends_on:
+      mongodb:
+        condition: "service_healthy"
+        restart: true
+    image: "11notes/unifi-network-application:10.1.85"
+    <<: *lockdown
+    environment:
+      TZ: "Europe/Zurich"
+    volumes:
+      - "network-application.var:/unifi/var"
+    tmpfs:
+      - "/unifi/log:uid=1000,gid=1000"
+      - "/unifi/run:uid=1000,gid=1000"
+    ports:
+      - "3000:8443/tcp"
+    networks:
+      frontend:
+      backend:
+    restart: always
+
+  mongodb:
+    # for more information about this image checkout:
+    # https://github.com/11notes/docker-mongodb
+    image: "11notes/mongodb:4.4.30"
+    <<: *lockdown
+    environment:
+      TZ: "Europe/Zurich"
+    networks:
+      backend:
+    volumes:
+      - "mongodb.var:/mongodb/var"
+      - "mongodb.backup:/mongodb/backup"
+    restart: "always"
+
+volumes:
+  network-application.var:
+  mongodb.var:
+  mongodb.backup:
+
+networks:
+  frontend:
+  backend:
+    internal: true
