@@ -12,6 +12,8 @@ ${{ github:> }}* ... this image is created via a secure and pinned CI/CD process
 
 If you value security, simplicity and optimizations to the extreme, then this image might be for you.
 
+${{ content_comparison }}
+
 ${{ title_volumes }}
 * **${{ json_root }}/var** - Directory of all configuration data and sites
 
