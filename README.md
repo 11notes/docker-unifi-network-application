@@ -138,7 +138,7 @@ This image supports nobody by default. Simply add **-nobody** to any tag and the
 * [11notes/unifi-network-application](https://github.com/11notes/docker-unifi-network-application)
 
 # PARENT IMAGE 🏛️
-* [11notes/debian:13](${{ json_readme_parent_url }})
+* [11notes/debian:13](https://hub.docker.com/r/11notes/debian)
 
 # BUILT WITH 🧰
 * [unifi](https://community.ui.com/releases/r/network/10.1.85)
@@ -159,4 +159,4 @@ This image supports nobody by default. Simply add **-nobody** to any tag and the
 # ElevenNotes™️
 This image is provided to you at your own risk. Always make backups before updating an image to a different version. Check the [releases](https://github.com/11notes/docker-unifi-network-application/releases) for breaking changes. If you have any problems with using this image simply raise an [issue](https://github.com/11notes/docker-unifi-network-application/issues), thanks. If you have a question or inputs please create a new [discussion](https://github.com/11notes/docker-unifi-network-application/discussions) instead of an issue. You can find all my other repositories on [github](https://github.com/11notes?tab=repositories).
 
-*created 23.02.2026, 22:34:53 (CET)*
+*created 23.02.2026, 23:11:05 (CET)*
