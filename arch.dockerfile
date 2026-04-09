@@ -3,8 +3,7 @@
 # ╚═════════════════════════════════════════════════════╝
 # GLOBAL
   ARG APP_UID=1000 \
-      APP_GID=1000 \
-      APP_VERSION=0
+      APP_GID=1000
 
 # :: FOREIGN IMAGES
   FROM 11notes/util AS util
@@ -24,7 +23,7 @@
       curl \
       wget \
       unzip; \
-    wget -q --show-progress --progress=bar:force -O /tmp/unifi.zip $(curl -s "https://fw-update.ubnt.com/api/firmware?filter=eq~~product~~unifi-controller&filter=eq~~platform~~unix&filter=eq~~channel~~release&sort=-version" \ | jq -r "._embedded.firmware[] | select(.version | test(\"v${APP_VERSION}\")) | ._links.data.href"); \
+    wget -q --show-progress --progress=bar:force -O /tmp/unifi.zip $(curl -s "https://fw-update.ubnt.com/api/firmware?filter=eq~~product~~unifi-controller&filter=eq~~platform~~unix&filter=eq~~channel~~release&sort=-version" | jq -r "._embedded.firmware[] | select(.version | test(\"v${APP_VERSION}\")) | ._links.data.href"); \
     mkdir -p /distroless/usr/lib; \
     unzip -qq /tmp/unifi.zip -d /distroless/usr/lib; \
     mv /distroless/usr/lib/UniFi /distroless/usr/lib/unifi;
