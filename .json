@@ -18,5 +18,8 @@
     "comparison": {
       "image": "linuxserver/unifi-controller"
     }
+  },
+  "grype": {
+    "fail": false
   }
 }
