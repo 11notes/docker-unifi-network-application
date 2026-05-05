@@ -13,7 +13,7 @@ services:
       mongodb:
         condition: "service_healthy"
         restart: true
-    image: "11notes/unifi-network-application:10.1.85"
+    image: "11notes/unifi-network-application:10.3.58"
     <<: *lockdown
     environment:
       TZ: "Europe/Zurich"
