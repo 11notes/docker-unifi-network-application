@@ -32,7 +32,9 @@
   FROM 11notes/debian:13 AS build
   COPY --from=util / /
   COPY --from=source /distroless/ /
-  ARG APP_ROOT
+  ARG APP_ROOT \
+      APP_UID \
+      APP_GID
   USER root
 
   RUN set -ex; \
@@ -44,14 +46,21 @@
   RUN set -ex; \
     mkdir -p ${APP_ROOT}/var/sites/default; \
     rm -rf /var/lib/unifi; ln -sf ${APP_ROOT}/var /var/lib/unifi; \
+    rm -rf /usr/lib/unifi/data; ln -sf ${APP_ROOT}/var /usr/lib/unifi/data; \
     rm -rf /var/log/unifi; ln -sf ${APP_ROOT}/log /var/log/unifi; \
     rm -rf /usr/lib/unifi/logs; ln -sf ${APP_ROOT}/log /usr/lib/unifi/logs; \
-    rm -rf /var/run/unifi; ln -sf ${APP_ROOT}/run /var/run/unifi;
+    rm -rf /var/run/unifi; ln -sf ${APP_ROOT}/run /var/run/unifi; \
+    rm -rf /usr/lib/unifi/run; ln -sf ${APP_ROOT}/run /usr/lib/unifi/run;
 
   RUN set -ex; \
     mkdir -p /usr/lib/unifi/data; \
     keytool -genkey -keyalg RSA -alias unifi -keystore /usr/lib/unifi/data/keystore -storepass aircontrolenterprise -keypass aircontrolenterprise -validity 3650 -keysize 4096 -dname "cn=unifi" -ext san=dns:unifi;
 
+  RUN set -ex; \
+  chown -R ${APP_UID}:${APP_GID} \
+    /usr/lib/unifi/data/keystore \
+    ${APP_ROOT};
+  
   RUN set -ex; \
     eleven cleanup;
 
@@ -59,12 +68,15 @@
 # :: FILE SYSTEM
   FROM alpine AS file-system
   COPY ./rootfs/ /distroless
-  ARG APP_ROOT
+  ARG APP_ROOT \
+      APP_UID \
+      APP_GID
 
   RUN set -ex; \
     mkdir -p /distroless${APP_ROOT}/var; \
     mkdir -p /distroless${APP_ROOT}/log; \
     mkdir -p /distroless${APP_ROOT}/run; \
+    chown -R ${APP_UID}:${APP_GID} /distroless${APP_ROOT}; \
     chmod +x -R /distroless/usr/local/bin;
 
 
